@@ -49,3 +49,4 @@ jobs:
             }'
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/portfolio/start" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
+        -d '{}'
