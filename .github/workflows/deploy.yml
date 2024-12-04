@@ -36,7 +36,7 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{
               "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
-              "name": "portfolio",
+              "name": "5_portfolio-test",
               "HostConfig": {
                 "PortBindings": {
                   "80/tcp": [
