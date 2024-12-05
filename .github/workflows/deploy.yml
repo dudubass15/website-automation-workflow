@@ -52,7 +52,7 @@ jobs:
               "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
               "HostConfig": {
                 "PortBindings": {
-                  "80/tcp": [
+                  "8085/tcp": [
                     {
                       "HostPort": "8085"
                     }
