@@ -1,4 +1,4 @@
-name: Deploy to Portainer
+name: Production
 
 on:
   push:
