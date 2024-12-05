@@ -35,7 +35,7 @@ jobs:
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
         -H "Content-Type: application/json" \
         -d '{
-              "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
+              "Image": "dudubass15/portfolio:latest",
               "HostConfig": {
                 "PortBindings": {
                   "80/tcp": [
@@ -46,6 +46,6 @@ jobs:
                 }
               }
             }'
-        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/5_portfolio/start" \
-        -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
-        -d '{}'
+        # curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/5_portfolio/start" \
+        # -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
+        # -d '{}'
