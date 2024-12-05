@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,20 +29,35 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/portfolio:latest
 
+  remove-container:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
     - name: Remove existing container if exists
       run: |
-          CONTAINER_ID=$(curl -s -X GET "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/json?all=true" \
-          -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" | jq -r '.[] | select(.Names[] == "/portfolio") | .Id')
-          if [ -n "$CONTAINER_ID" ]; then
-            curl -X DELETE "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/$CONTAINER_ID?force=true" \
-            -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
-          fi
-    
+        CONTAINER_ID=$(curl -s -X GET "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/json?all=true" \
+        -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" | jq -r '.[] | select(.Names[] == "/portfolio") | .Id')
+        if [ -n "$CONTAINER_ID" ]; then
+          curl -X DELETE "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/$CONTAINER_ID?force=true" \
+          -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
+        fi
+
+  pull-image:
+    runs-on: ubuntu-latest
+    needs: remove-container
+
+    steps:
     - name: Pull Docker image on Portainer
       run: |
-            curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/images/create?fromImage=${{ secrets.DOCKER_USERNAME }}/portfolio&tag=latest" \
-            -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
+        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/images/create?fromImage=${{ secrets.DOCKER_USERNAME }}/portfolio&tag=latest" \
+        -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: pull-image
+
+    steps:
     - name: Deploy to Portainer
       run: |
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/create?name=5_portfolio" \
