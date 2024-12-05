@@ -69,7 +69,7 @@ jobs:
                 "PortBindings": {
                   "8085/tcp": [
                     {
-                      "HostPort": "8085"
+                      "HostPort": "80"
                     }
                   ]
                 }
