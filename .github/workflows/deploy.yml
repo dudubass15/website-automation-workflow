@@ -33,20 +33,12 @@ jobs:
       run: |
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/create" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
-              "name": "portfolio",
-              "HostConfig": {
-                "PortBindings": {
-                  "80/tcp": [
-                    {
-                      "HostPort": "80"
-                    }
-                  ]
-                }
-              }
-            }'
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d name=="portfolio" \
+        -d Image="${{ secrets.DOCKER_USERNAME }}/portfolio:latest" \
+        -d HostConfig:='{ "PortBindings": { "80/tcp": [{ "HostPort": "80" }] } }'
+
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/portfolio/start" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
         -d '{}'
