@@ -44,7 +44,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
         tag_name: v${{ github.run_number }}
-        release_name: Release ${{ github.run_number }}
+        release_name: website ${{ github.run_number }}
         body: |
           Release created for commit ${{ github.sha }}.
         draft: false
