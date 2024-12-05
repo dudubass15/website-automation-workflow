@@ -85,7 +85,7 @@ jobs:
           echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
 
     - name: Pull Docker image on Portainer
-      if: ${{ env.IMAGE_EXISTS == 'false' }}
+      if: env.IMAGE_EXISTS == 'false'
       run: |
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/images/create?fromImage=${{ secrets.DOCKER_USERNAME }}/portfolio&tag=latest" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
