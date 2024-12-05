@@ -26,7 +26,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/portfolio:latest
 
@@ -35,7 +34,6 @@ jobs:
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/create" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
         -H "Content-Type: application/json" \
-        -H name=="portfolio" \
         -d '{
               "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
               "name": "portfolio",
