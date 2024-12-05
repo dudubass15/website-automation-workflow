@@ -31,14 +31,21 @@ jobs:
 
     - name: Deploy to Portainer
       run: |
-        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/create" \
+        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/create?name=5_portfolio" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
         -H "Content-Type: application/json" \
-        -d name=="portfolio" \
-        -d Image="${{ secrets.DOCKER_USERNAME }}/portfolio:latest" \
-        -d HostConfig:='{ "PortBindings": { "80/tcp": [{ "HostPort": "80" }] } }'
-
-        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/portfolio/start" \
+        -d '{
+              "Image": "${{ secrets.DOCKER_USERNAME }}/portfolio:latest",
+              "HostConfig": {
+                "PortBindings": {
+                  "80/tcp": [
+                    {
+                      "HostPort": "80"
+                    }
+                  ]
+                }
+              }
+            }'
+        curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/containers/5_portfolio/start" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" \
-        -H "Content-Type: application/json" \
         -d '{}'
