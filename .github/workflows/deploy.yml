@@ -54,7 +54,7 @@ jobs:
                 "PortBindings": {
                   "80/tcp": [
                     {
-                      "HostPort": "80"
+                      "HostPort": "8085"
                     }
                   ]
                 }
