@@ -74,7 +74,18 @@ jobs:
     needs: remove-container
 
     steps:
+    - name: Check if Docker image exists on Portainer
+      id: check_image
+      run: |
+        IMAGE_EXISTS=$(curl -s -X GET "https://portainer.carloseduardo.dev/api/endpoints/2/docker/images/json" \
+        -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}" | jq -r '.[] | select(.RepoTags[] == "${{ secrets.DOCKER_USERNAME }}/portfolio:latest") | .Id')
+        if [ -z "$IMAGE_EXISTS" ]; then
+          echo "IMAGE_EXISTS=false" >> $GITHUB_ENV
+        else
+          echo "IMAGE_EXISTS=true" >> $GITHUB_ENV
+
     - name: Pull Docker image on Portainer
+      if: ${{ env.IMAGE_EXISTS == 'false' }}
       run: |
         curl -X POST "https://portainer.carloseduardo.dev/api/endpoints/2/docker/images/create?fromImage=${{ secrets.DOCKER_USERNAME }}/portfolio&tag=latest" \
         -H "X-API-Key: ${{ secrets.PORTAINER_API_TOKEN }}"
